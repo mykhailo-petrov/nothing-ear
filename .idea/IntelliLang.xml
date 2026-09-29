@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LanguageInjectionConfiguration">
+    <injection language="file-reference" injector-id="xml">
+      <display-name>&lt;load src&gt; — HTML-инклюд (vite-plugin-html-inject)</display-name>
+      <place><![CDATA[xmlAttribute().withLocalName("src").withParent(xmlTag().withLocalName("load"))]]></place>
+    </injection>
+  </component>
+</project>

@@ -1,0 +1,63 @@
+@use '@scss' as *;
+@use '@scss/components/component-mixins/button-mixins' as buttons;
+
+.button {
+	--sss-button-bg-def: var(--sss-white);
+	--sss-button-border-color-def: var(--sss-white);
+	--sss-button-color-def: var(--sss-black);
+	--sss-element-transition:
+		background-color var(--sss-transition-time) var(--sss-transition-ease),
+		border-color var(--sss-transition-time) var(--sss-transition-ease),
+		color var(--sss-transition-time) var(--sss-transition-ease);
+
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	min-width: var(--sss-button-min-width, unset);
+	min-height: var(--sss-button-height, rem(55));
+	padding-block: rem(4);
+	padding-inline: var(--sss-button-padding-inline, rem(30));
+	border: 1px solid var(--sss-button-border-color, var(--sss-button-border-color-def));
+	border-radius: calc(var(--sss-button-height) / 2);
+	background-color: var(--sss-button-bg, var(--sss-button-bg-def));
+	font-family: var(--sss-font-secondary);
+	font-size: var(--sss-button-font-size, rem(14));
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--sss-button-color, var(--sss-button-color-def));
+	transition: var(--sss-element-transition);
+
+	@include hover {
+		--sss-button-bg: var(--sss-button-bg-hov);
+		--sss-button-border-color: var(--sss-button-border-hov);
+		--sss-button-color: var(--sss-button-color-hov);
+	}
+
+	&:active {
+		--sss-button-bg: var(--sss-button-bg-act);
+		--sss-button-border-color: var(--sss-button-border-act);
+		--sss-button-color: var(--sss-button-color-act);
+	}
+
+	&--fw {
+		width: 100%;
+	}
+
+	&--primary {
+		@include buttons.button-primary;
+	}
+
+	&--secondary {
+		@include buttons.button-secondary;
+	}
+
+	&--l {
+		@include buttons.button-l;
+	}
+
+	&--m {
+		@include buttons.button-m;
+	}
+}

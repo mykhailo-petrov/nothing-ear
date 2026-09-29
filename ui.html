@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="icon" href="/favicon.ico" />
+		<title>UI — My Template</title>
+		<style>
+			.ui-shell {
+				display: grid;
+				grid-template-rows: auto 1fr;
+				min-height: 100%;
+			}
+
+			.ui-tabs {
+				position: sticky;
+				top: 0;
+				z-index: 10;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 4px;
+				padding: 16px;
+				border-bottom: 1px solid var(--sss-border, #ddd);
+				background-color: var(--sss-bg-secondary, #fff);
+			}
+
+			.ui-tabs__btn {
+				padding: 6px 14px;
+				border: 1px solid var(--sss-border, #ddd);
+				border-radius: var(--sss-border-radius, 4px);
+				background: none;
+				cursor: pointer;
+				font: inherit;
+				color: inherit;
+			}
+
+			.ui-tabs__btn.is-active {
+				border-color: var(--sss-bg-accent, #333);
+				background-color: var(--sss-bg-accent, #333);
+				color: var(--sss-text-secondary, #fff);
+			}
+
+			.ui-panel {
+				display: none;
+				padding: 24px 16px 64px;
+			}
+
+			.ui-panel.is-active {
+				display: grid;
+				gap: 16px;
+			}
+
+			.ui-panel h2 {
+				font-size: 20px;
+				font-weight: 600;
+			}
+
+			.ui-row {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 16px;
+			}
+
+			.ui-col {
+				display: grid;
+				gap: 16px;
+				max-width: 320px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="ui-shell">
+				<nav class="ui-tabs">
+					<button type="button" class="ui-tabs__btn is-active" data-ui-tab="button">Button</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="link">Link</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="checkbox">Checkbox</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="radio">Radio</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="switch">Switch</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="select">Select</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="input">Input</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="badge">Badge</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="alert">Alert</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="table">Table</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="popup">Popup</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="tooltip">Tooltip</button>
+					<button type="button" class="ui-tabs__btn" data-ui-tab="slider">Slider</button>
+				</nav>
+
+				<main>
+					<section class="ui-panel is-active" data-ui-panel="button">
+						<h2>Button</h2>
+						<p>
+							components/_button.scss — модификаторы <code>--fw</code>, <code>--primary</code>,
+							<code>--secondary</code>, <code>--tertiary</code>. Ripple подключается атрибутом
+							<code>data-ripple</code> (effects/_ripple.scss, myFunctions.rippleEffect()).
+						</p>
+						<div class="ui-row">
+							<button type="button" class="button" data-ripple>Кнопка</button>
+							<button type="button" class="button button--fw" data-ripple>Full width</button>
+							<a href="#" class="button" data-ripple>Ссылка-кнопка</a>
+							<button type="button" class="button" data-ripple="once">data-ripple="once"</button>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="link">
+						<h2>Link</h2>
+						<p>
+							components/_link.scss — модификаторы <code>--primary</code>, <code>--secondary</code>,
+							<code>--accent</code>, <code>--tertiary</code> (последний пока без цвета — как
+							<code>--tertiary</code> у button, заготовка под будущий дизайн).
+						</p>
+						<div class="ui-row">
+							<a href="#" class="link link--primary">Primary</a>
+							<a href="#" class="link link--secondary">Secondary</a>
+							<a href="#" class="link link--accent">Accent</a>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="checkbox">
+						<h2>Checkbox</h2>
+						<p>
+							components/_checkbox.scss — сниппет <code>chk</code>. <code>.checkbox__input</code> и
+							<code>.checkbox__label</code> должны быть соседями (селектор <code>+</code>).
+						</p>
+						<div class="ui-col">
+							<div class="checkbox">
+								<input type="checkbox" id="ui-chk-1" class="checkbox__input" />
+								<label class="checkbox__label" for="ui-chk-1">
+									<span class="checkbox__text">Обычный чекбокс</span>
+								</label>
+							</div>
+							<div class="checkbox">
+								<input type="checkbox" id="ui-chk-2" class="checkbox__input" checked />
+								<label class="checkbox__label" for="ui-chk-2">
+									<span class="checkbox__text">Отмеченный по умолчанию</span>
+								</label>
+							</div>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="radio">
+						<h2>Radio</h2>
+						<p>
+							components/_radio.scss — сниппет <code>opt</code>. Группа — <code>.options</code>,
+							вариант — <code>.options__item</code>.
+						</p>
+						<div class="options">
+							<div class="options__item">
+								<input
+									type="radio"
+									name="ui-radio"
+									id="ui-radio-1"
+									class="options__input"
+									checked
+								/>
+								<label class="options__label" for="ui-radio-1">
+									<span class="options__text">Вариант 1</span>
+								</label>
+							</div>
+							<div class="options__item">
+								<input type="radio" name="ui-radio" id="ui-radio-2" class="options__input" />
+								<label class="options__label" for="ui-radio-2">
+									<span class="options__text">Вариант 2</span>
+								</label>
+							</div>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="switch">
+						<h2>Switch</h2>
+						<p>
+							components/_switch.scss — та же структура, что у checkbox, плюс
+							<code>.switch__track</code>.
+						</p>
+						<div class="switch">
+							<input type="checkbox" id="ui-switch-1" class="switch__input" />
+							<label class="switch__label" for="ui-switch-1">
+								<span class="switch__track"></span>
+								<span class="switch__text">Тумблер</span>
+							</label>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="select">
+						<h2>Select</h2>
+						<p>
+							components/_select.scss — обёртка <code>.select</code> вокруг нативного
+							<code>select.select__native</code>.
+						</p>
+						<div class="select" style="max-width: 240px">
+							<select class="select__native">
+								<option>Первый вариант</option>
+								<option>Второй вариант</option>
+								<option>Третий вариант</option>
+							</select>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="input">
+						<h2>Input</h2>
+						<p>
+							components/_input.scss — сниппет <code>inp</code>. Обёртка-подпись —
+							<code>.input-label</code>, поле — <code>.input</code> (работает и с
+							<code>textarea</code>).
+						</p>
+						<div class="ui-col">
+							<label class="input-label" for="ui-input-1">
+								Обычное поле
+								<input type="text" id="ui-input-1" class="input" placeholder="Плейсхолдер" />
+							</label>
+							<label class="input-label" for="ui-input-2">
+								С ошибкой (._form-error)
+								<input
+									type="text"
+									id="ui-input-2"
+									class="input _form-error"
+									value="Неверное значение"
+								/>
+							</label>
+							<label class="input-label" for="ui-input-3">
+								Textarea
+								<textarea id="ui-input-3" class="input" rows="3" placeholder="Текст..."></textarea>
+							</label>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="badge">
+						<h2>Badge</h2>
+						<p>
+							components/_badge.scss — модификаторы <code>--accent</code>, <code>--warning</code>,
+							<code>--error</code>.
+						</p>
+						<div class="ui-row">
+							<span class="badge">Обычный</span>
+							<span class="badge badge--accent">Accent</span>
+							<span class="badge badge--warning">Warning</span>
+							<span class="badge badge--error">Error</span>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="alert">
+						<h2>Alert</h2>
+						<p>
+							components/_alert.scss — модификаторы <code>--warning</code>, <code>--error</code>.
+						</p>
+						<div class="ui-col">
+							<div class="alert">
+								<div class="alert__title">Обычное сообщение</div>
+								<div>Нейтральный текст без модификатора.</div>
+							</div>
+							<div class="alert alert--warning">
+								<div class="alert__title">Внимание</div>
+								<div>Используется <code>var(--sss-warning)</code> из палитры.</div>
+							</div>
+							<div class="alert alert--error">
+								<div class="alert__title">Ошибка</div>
+								<div>Используется <code>var(--sss-error)</code> из палитры.</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="table">
+						<h2>Table</h2>
+						<p>components/_table.scss — базовая таблица без карт стилизации сторонних библиотек.</p>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Модуль</th>
+									<th>Файл</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Ripple</td>
+									<td>effects/_ripple.scss</td>
+								</tr>
+								<tr>
+									<td>Popup</td>
+									<td>components/_popup.scss</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="popup">
+						<h2>Popup</h2>
+						<p>
+							components/_popup.scss + js/modules/popup.js. Разметка попапа —
+							src/partials/popups/*.html, сниппет <code>pop</code>.
+						</p>
+						<div class="ui-row">
+							<button type="button" class="button" data-popup="#popup-example" data-ripple>
+								Открыть попап
+							</button>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="tooltip">
+						<h2>Tooltip</h2>
+						<p>effects/_tooltip.scss — атрибут <code>data-tooltip</code>, чисто на CSS (без JS).</p>
+						<div class="ui-row">
+							<span class="tooltip" data-tooltip="Текст подсказки">Наведите на меня</span>
+						</div>
+					</section>
+
+					<section class="ui-panel" data-ui-panel="slider">
+						<h2>Slider</h2>
+						<p>
+							Шаблон: <code>src/partials/sliders/slider.html</code>, настройки —
+							<code>sliders.slider</code> в <code>slider.js</code>, стили — <code>.slider</code> в
+							<code>_slider.scss</code>.
+						</p>
+						<load src="./src/partials/sliders/slider.html" />
+					</section>
+				</main>
+			</div>
+		</div>
+
+		<load src="./src/partials/popups/example.html" />
+
+		<script type="module" src="/src/main.js"></script>
+		<script type="module">
+			const tabs = document.querySelectorAll('[data-ui-tab]');
+			const panels = document.querySelectorAll('[data-ui-panel]');
+
+			tabs.forEach((tab) => {
+				tab.addEventListener('click', () => {
+					const target = tab.dataset.uiTab;
+
+					tabs.forEach((t) => t.classList.toggle('is-active', t === tab));
+					panels.forEach((p) => p.classList.toggle('is-active', p.dataset.uiPanel === target));
+				});
+			});
+		</script>
+	</body>
+</html>

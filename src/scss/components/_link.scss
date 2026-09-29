@@ -1,0 +1,22 @@
+@use '@scss' as *;
+
+.link {
+	transition: color var(--sss-transition-time) var(--sss-transition-ease);
+
+	&--primary {
+		color: var(--sss-link-primary);
+
+		@include hover {
+			color: var(--sss-link-primary-hover);
+		}
+
+		&:active {
+			color: var(--sss-link-primary-active);
+		}
+
+		&--active,
+		&._active {
+			color: var(--sss-link-primary-active);
+		}
+	}
+}

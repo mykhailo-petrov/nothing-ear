@@ -1,0 +1,90 @@
+@use '@scss' as *;
+@use '@scss/font/icons';
+
+.form-container {
+	position: relative;
+
+	&__input,
+	&__select,
+	&__textarea {
+		display: block;
+		width: 100%;
+		height: var(--sss-input-height, rem(44));
+		border-bottom: 1px solid var(--sss-input-border-color, var(--sss-white-32));
+		background: transparent;
+		font-size: var(--sss-input-font-size, rem(17));
+		color: var(--sss-input-color, var(--sss-white));
+		transition:
+			border-color var(--sss-transition-time) var(--sss-transition-ease),
+			color var(--sss-transition-time) var(--sss-transition-ease);
+
+		&::placeholder {
+			font-family: inherit;
+			font-size: inherit;
+			color: var(--sss-input-placeholder-color, var(--sss-text-gray));
+			transition:
+				color var(--sss-transition-time) var(--sss-transition-ease),
+				opacity var(--sss-transition-time) var(--sss-transition-ease);
+		}
+
+		&._form-focus {
+			--sss-input-border-color: var(--sss-bg-accent);
+
+			outline: none;
+		}
+
+		&._form-error {
+			--sss-input-border-color: var(--sss-error);
+			--sss-input-placeholder-color: var(--sss-error);
+		}
+	}
+
+	&__textarea {
+		height: auto;
+		min-height: var(--sss-textarea-min-height, rem(104));
+		padding-block: rem(10);
+		resize: none;
+	}
+}
+
+.form-label {
+	display: grid;
+	gap: rem(4);
+	cursor: pointer;
+}
+
+.form-error-text {
+	grid-column: 1 / -1;
+	font-size: rem(14);
+	color: var(--sss-error);
+}
+
+.arrow-select {
+	position: absolute;
+	top: calc(var(--sss-input-height, rem(44)) / 2);
+	right: 0;
+	font-size: var(--sss-arrow-size, rem(15));
+	color: var(--sss-arrow-select-color, var(--sss-text-tertiary));
+	transform: translate(rem(-4), -50%);
+}
+
+.form-container__input,
+.form-container__select,
+.form-container__textarea {
+	&:autofill,
+	&:autofill:hover,
+	&:autofill:focus,
+	&:autofill:active,
+	&:-webkit-autofill,
+	&:-webkit-autofill:hover,
+	&:-webkit-autofill:focus,
+	&:-webkit-autofill:active {
+		filter: none;
+		transition:
+			border-color var(--sss-transition-time) var(--sss-transition-ease),
+			background-color 600000s 0s,
+			color 600000s 0s;
+		-webkit-text-fill-color: var(--sss-input-color, var(--sss-white));
+		caret-color: var(--sss-input-color, var(--sss-white));
+	}
+}

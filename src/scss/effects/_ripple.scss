@@ -1,0 +1,23 @@
+[data-ripple] {
+	position: relative;
+	overflow: hidden;
+}
+
+.ripple {
+	position: absolute;
+	border: 1px solid color-mix(in srgb, var(--sss-ripple) 50%, transparent);
+	border-radius: 50%;
+	background-color: color-mix(in srgb, var(--sss-ripple) 30%, transparent);
+	animation: button-circle 1.5s ease forwards;
+}
+
+@keyframes button-circle {
+	0% {
+		transform: scale(0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(10);
+	}
+}

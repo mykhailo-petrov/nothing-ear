@@ -1,0 +1,95 @@
+@use 'sass:math';
+@use '@scss/settings' as settings;
+
+$mob-s: settings.$min-width;
+$mob: 480;
+$mob-m: 576;
+$tab: 768;
+$desk-s: 1280;
+$desk-m: 1440;
+$desk-l: settings.$max-width;
+$mob-s-em: math.div($mob-s, 16) * 1em;
+$mob-em: math.div($mob, 16) * 1em;
+$mob-m-em: math.div($mob-m, 16) * 1em;
+$tab-em: math.div($tab, 16) * 1em;
+$desk-s-em: math.div($desk-s, 16) * 1em;
+$desk-m-em: math.div($desk-m, 16) * 1em;
+$desk-l-em: math.div($desk-l, 16) * 1em;
+
+@mixin mob-s {
+	@media (min-width: $mob-s-em) {
+		@content;
+	}
+}
+
+@mixin mob {
+	@media (min-width: $mob-em) {
+		@content;
+	}
+}
+
+@mixin mob-m {
+	@media (min-width: $mob-m-em) {
+		@content;
+	}
+}
+
+@mixin tab {
+	@media (min-width: $tab-em) {
+		@content;
+	}
+}
+
+@mixin desk-s {
+	@media (min-width: $desk-s-em) {
+		@content;
+	}
+}
+
+@mixin desk-m {
+	@media (min-width: $desk-m-em) {
+		@content;
+	}
+}
+
+@mixin desk-l {
+	@media (min-width: $desk-l-em) {
+		@content;
+	}
+}
+
+@mixin max-mob {
+	@media (max-width: $mob-em) {
+		@content;
+	}
+}
+
+@mixin max-mob-m {
+	@media (max-width: $mob-m-em) {
+		@content;
+	}
+}
+
+@mixin max-tab {
+	@media (max-width: $tab-em) {
+		@content;
+	}
+}
+
+@mixin max-desk-s {
+	@media (max-width: $desk-s-em) {
+		@content;
+	}
+}
+
+@mixin max-desk-m {
+	@media (max-width: $desk-m-em) {
+		@content;
+	}
+}
+
+@mixin max-desk-l {
+	@media (max-width: $desk-l-em) {
+		@content;
+	}
+}

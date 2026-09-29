@@ -1,0 +1,43 @@
+:root {
+	--sss-white: rgb(255 255 255 / 1);
+	--sss-black: rgb(0 0 0 / 1);
+	--sss-black-13: rgb(0 0 0 / 0.13);
+	--sss-white-82: rgb(255 255 255 / 0.82);
+	--sss-white-85: rgb(255 255 255 / 0.85);
+	--sss-white-32: rgb(255 255 255 / 0.32);
+	--sss-white-07: rgb(255 255 255 / 0.07);
+	--sss-bg-primary: var(--sss-black);
+	--sss-bg-secondary: var(--sss-white);
+	--sss-bg-accent: var(--sss-white);
+	--sss-bg-image-shadows:
+		linear-gradient(180deg, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0) 60%, rgb(0 0 0 / 0.85) 100%),
+		linear-gradient(
+			90deg,
+			rgb(0 0 0 / 0.92) 0%,
+			rgb(0 0 0 / 0.7) 32%,
+			rgb(0 0 0 / 0.15) 62%,
+			rgb(0 0 0 / 0.45) 100%
+		);
+	--sss-bg-image-shadows-sound:
+		linear-gradient(180deg, rgb(0 0 0 / 0.7) 0%, rgb(0 0 0 / 0) 14%),
+		linear-gradient(180deg, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0) 50%, rgb(0 0 0 / 0.55) 82%, #000 100%);
+	--sss-text-primary: rgb(10 10 10 / 1);
+	--sss-text-secondary: rgb(95 95 95 / 1);
+	--sss-text-tertiary: rgb(155 155 155 / 1);
+	--sss-text-gray: rgb(118 118 118 / 1);
+	--sss-link-primary: rgb(155 155 155 / 1);
+	--sss-link-primary-hover: rgb(155 155 155 / 0.5);
+	--sss-link-primary-active: rgb(155 155 155 / 1);
+	--sss-menu-link: rgb(255 255 255 / 1);
+	--sss-menu-link-hov: rgb(255 255 255 / 0.5);
+	--sss-menu-link-act: rgb(255 255 255 / 1);
+	--sss-menu-link-dark: rgb(0 0 0 / 1);
+	--sss-menu-link-dark-hov: rgb(0 0 0 / 0.5);
+	--sss-menu-link-dark-act: rgb(0 0 0 / 1);
+	--sss-overlay: rgb(0 0 0 / 0.72);
+	--sss-ripple: rgb(255 255 255);
+	--sss-rating-star-color: rgb(217 164 65);
+	--sss-quantity-border: rgb(166 166 166);
+	--sss-warning: rgb(217 140 43);
+	--sss-error: rgb(193 68 58);
+}

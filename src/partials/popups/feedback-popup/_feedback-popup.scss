@@ -1,0 +1,37 @@
+@use '@scss' as *;
+
+.feedback {
+	display: grid;
+
+	@include adaptiveValue('gap', 32, 40, $width-to: 1440);
+
+	&__head {
+		display: grid;
+		gap: rem(16);
+		padding-inline-end: rem(32);
+	}
+
+	&__label {
+		font-family: var(--sss-font-secondary);
+		font-size: rem(12);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--sss-text-gray);
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('font-size', 36, 56, $width-to: 1440);
+	}
+
+	&__description {
+		line-height: 1.5;
+		color: var(--sss-text-tertiary);
+
+		@include adaptiveValue('font-size', 15, 17, $width-to: 1440);
+	}
+}

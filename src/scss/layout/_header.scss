@@ -1,0 +1,231 @@
+@use '@scss' as *;
+@use '@scss/breakpoints' as breakpoint;
+@use '@scss/components/component-mixins/button-mixins' as buttons;
+
+%menu-link {
+	--sss-header-menu-link-color-def: var(--sss-menu-link-dark);
+	--sss-header-menu-link-color-hov: var(--sss-menu-link-dark-hov);
+	--sss-header-menu-link-color-act: var(--sss-menu-link-dark-act);
+
+	position: relative;
+	z-index: 1;
+	font-family: var(--sss-font-secondary);
+	font-size: rem(26);
+	letter-spacing: 0.066em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: var(--sss-header-menu-link-color, var(--sss-header-menu-link-color-def));
+	transition:
+		color var(--sss-transition-time) var(--sss-transition-ease),
+		text-shadow var(--sss-transition-time) var(--sss-transition-ease);
+	will-change: transform;
+
+	@include breakpoint.tab {
+		--sss-header-menu-link-color-def: var(--sss-menu-link);
+		--sss-header-menu-link-color-hov: var(--sss-menu-link-hov);
+		--sss-header-menu-link-color-act: var(--sss-menu-link-act);
+
+		font-size: rem(18);
+	}
+
+	@include hover {
+		color: var(--sss-header-menu-link-color-hov);
+	}
+
+	&:active {
+		color: var(--sss-header-menu-link-color-act);
+	}
+
+	&._active {
+		font-weight: 700;
+		text-shadow: 0 0 rem(3) var(--sss-header-menu-link-color-act);
+		color: var(--sss-header-menu-link-color-act);
+	}
+}
+
+.header {
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+	transition: transform var(--sss-transition-time) var(--sss-transition-ease);
+
+	&::before {
+		position: absolute;
+		z-index: -1;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgb(0 0 0 / 0.9) 0%,
+			rgb(0 0 0 / 0.6) 70%,
+			rgb(0 0 0 / 0) 100%
+		);
+		opacity: var(--sss-header-bg-op, 0);
+		transition: opacity var(--sss-transition-time) var(--sss-transition-ease);
+		pointer-events: none;
+		content: '';
+	}
+
+	&._scroll {
+		transform: translateY(-100%);
+	}
+
+	&._show {
+		--sss-header-bg-op: 1;
+
+		transform: translateY(0);
+	}
+
+	&__container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: rem(6);
+		height: var(--sss-header-height);
+		padding-block: rem(4);
+		background: transparent;
+		transition: background var(--sss-transition-time) var(--sss-transition-ease);
+
+		.burger-open & {
+			background: var(--sss-bg-primary);
+		}
+	}
+
+	&__logo {
+		position: relative;
+		width: rem(144);
+		height: rem(26);
+		transition: opacity var(--sss-transition-time) var(--sss-transition-ease);
+
+		@include hover {
+			opacity: 0.85;
+		}
+	}
+
+	&__image {
+		position: absolute;
+		top: 0;
+		inset-inline-start: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	&__button {
+		@include buttons.button-secondary;
+		@include buttons.button-l;
+
+		@include breakpoint.tab {
+			@include buttons.button-primary;
+			@include buttons.button-m;
+		}
+	}
+}
+
+.menu {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: rem(12);
+	margin-top: var(--sss-header-height);
+	padding: rem(12);
+	background: var(--sss-bg-secondary);
+	transform: translateX(var(--sss-header-menu-translate, 100%));
+	transition: transform var(--sss-transition-time) var(--sss-transition-ease);
+
+	@include breakpoint.tab {
+		position: static;
+		flex-direction: row;
+		height: 100%;
+		margin-top: 0;
+		padding: 0;
+		background: transparent;
+		transform: none;
+	}
+
+	.burger-open & {
+		--sss-header-menu-translate: 0;
+	}
+
+	&__list {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		gap: rem(24);
+		min-height: 50%;
+		text-align: center;
+
+		@include breakpoint.tab {
+			flex-direction: row;
+			justify-content: center;
+			gap: rem(48);
+			text-align: start;
+		}
+	}
+
+	&__item {
+		@extend %menu-link;
+
+		width: 100%;
+		height: 100%;
+	}
+
+	&__link {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.burger-menu {
+	position: relative;
+	z-index: 20;
+	display: block;
+	width: rem(24);
+	height: rem(12);
+
+	@include breakpoint.tab {
+		display: none;
+	}
+
+	span,
+	&::before,
+	&::after {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: rem(2);
+		background-color: var(--sss-white);
+		transition:
+			transform var(--sss-transition-time) var(--sss-transition-ease),
+			opacity var(--sss-transition-time) var(--sss-transition-ease);
+		content: '';
+	}
+
+	&::before {
+		top: 0;
+	}
+
+	&::after {
+		bottom: 0;
+	}
+
+	.burger-open & {
+		span {
+			opacity: 0;
+		}
+
+		&::before {
+			top: calc(50% - #{rem(1)});
+			transform: rotate(45deg);
+		}
+
+		&::after {
+			bottom: calc(50% - #{rem(1)});
+			transform: rotate(-45deg);
+		}
+	}
+}

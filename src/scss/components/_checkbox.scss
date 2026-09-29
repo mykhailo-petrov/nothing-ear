@@ -1,0 +1,62 @@
+@use '@scss' as *;
+
+.checkbox-label {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	column-gap: rem(8);
+
+	&__text {
+		align-self: center;
+		font-size: rem(15);
+		color: var(--sss-checkbox-label-color, var(--sss-text-secondary));
+		transition: color var(--sss-transition-time) var(--sss-transition-ease);
+	}
+
+	&:has(._form-error) {
+		--sss-checkbox-label-color: var(--sss-error);
+	}
+}
+
+.checkbox {
+	position: relative;
+	display: block;
+	width: rem(16);
+	aspect-ratio: 1;
+	margin: rem(4);
+	border: 1px solid var(--sss-text-secondary);
+	border-radius: rem(2);
+	background-color: transparent;
+	overflow: hidden;
+	transition: box-shadow var(--sss-transition-time) var(--sss-transition-ease);
+
+	&::before {
+		position: absolute;
+		z-index: -1;
+		inset: 0;
+		border-radius: inherit;
+		background: var(--sss-bg-accent);
+		opacity: 0.5;
+		transform: scale(var(--sss-checkbox-indicator-scale, 0));
+		transition:
+			transform var(--sss-transition-time) var(--sss-transition-ease),
+			opacity var(--sss-transition-time) var(--sss-transition-ease);
+		pointer-events: none;
+		content: '';
+	}
+
+	@include hover {
+		box-shadow: 0 0 rem(5) var(--sss-bg-accent);
+	}
+
+	&:active {
+		--sss-checkbox-indicator-scale: 0.3;
+
+		box-shadow: none;
+	}
+
+	&:checked {
+		--sss-checkbox-indicator-scale: 2;
+
+		opacity: 1;
+	}
+}

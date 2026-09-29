@@ -1,0 +1,72 @@
+@use 'sass:math';
+@use '@scss' as *;
+@use '@scss/breakpoints' as breakpoint;
+@use 'settings' as *;
+
+$pc: em($container-width);
+
+body {
+	.lock & {
+		overflow: hidden;
+		overscroll-behavior: none;
+		touch-action: none;
+	}
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+	overflow: hidden;
+
+	@supports (overflow: clip) {
+		overflow: clip;
+	}
+
+	> main {
+		flex: 1 1 auto;
+	}
+
+	> * {
+		min-width: 0;
+	}
+}
+
+@if $responsive-type == 1 {
+	[class*='__container'] {
+		@if $max-width-container > 0 {
+			max-width: rem($container-width);
+			margin: 0 auto;
+		}
+
+		@if $max-padding > 0 {
+			padding-inline: var(--sss-container-padding);
+
+			@include adaptiveValue('--sss-container-padding', $min-padding, $max-padding);
+		}
+	}
+} @else {
+	[class*='__container'] {
+		margin: 0 auto;
+
+		@if $max-width-container > 0 {
+			max-width: rem($container-width);
+		}
+
+		@if $max-padding > 0 {
+			@include adaptiveValue('padding-inline', $min-padding, $max-padding);
+		}
+
+		@media (max-width: $pc) {
+			max-width: math.div($pc, 1em) * 1rem;
+		}
+
+		@include breakpoint.max-tab {
+			max-width: math.div(breakpoint.$tab, 16) * 1rem;
+		}
+
+		@include breakpoint.max-mob {
+			max-width: none;
+		}
+	}
+}

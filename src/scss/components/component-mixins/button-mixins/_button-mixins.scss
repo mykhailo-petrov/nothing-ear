@@ -1,0 +1,37 @@
+@use '@scss' as *;
+
+@mixin button-primary {
+	--sss-button-bg-def: var(--sss-white);
+	--sss-button-bg-hov: var(--sss-black);
+	--sss-button-bg-act: var(--sss-white);
+	--sss-button-border-color-def: var(--sss-white);
+	--sss-button-border-color-hov: var(--sss-white-32);
+	--sss-button-border-color-act: var(--sss-white);
+	--sss-button-color: var(--sss-black);
+	--sss-button-color-hov: var(--sss-white);
+	--sss-button-color-act: var(--sss-black);
+}
+
+@mixin button-secondary {
+	--sss-button-bg-def: var(--sss-black);
+	--sss-button-bg-hov: var(--sss-white);
+	--sss-button-bg-act: var(--sss-black);
+	--sss-button-border-color-def: var(--sss-white-32);
+	--sss-button-border-color-hov: var(--sss-white);
+	--sss-button-border-color-act: var(--sss-white-32);
+	--sss-button-color: var(--sss-white);
+	--sss-button-color-hov: var(--sss-black);
+	--sss-button-color-act: var(--sss-white);
+}
+
+@mixin button-l {
+	--sss-button-height: #{rem(55)};
+	--sss-button-padding-inline: #{rem(30)};
+	--sss-button-font-size: #{rem(14)};
+}
+
+@mixin button-m {
+	--sss-button-height: #{rem(36)};
+	--sss-button-padding-inline: #{rem(17)};
+	--sss-button-font-size: #{rem(12)};
+}

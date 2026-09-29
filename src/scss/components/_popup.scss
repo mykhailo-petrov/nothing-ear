@@ -1,0 +1,97 @@
+@use '@scss' as *;
+
+body::after {
+	position: fixed;
+	z-index: 149;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--sss-overlay);
+	backdrop-filter: blur(rem(6));
+	opacity: 0;
+	transition: opacity var(--sss-transition-time) var(--sss-transition-ease);
+	pointer-events: none;
+	content: '';
+}
+
+.popup-show body::after {
+	opacity: 1;
+}
+
+.popup {
+	position: fixed;
+	inset: 0;
+	visibility: hidden;
+	padding: 30px 10px;
+	transition: visibility var(--sss-transition-time) var(--sss-transition-ease);
+	pointer-events: none;
+}
+
+.popup_show {
+	z-index: 150;
+	visibility: visible;
+	overflow: auto;
+	pointer-events: auto;
+}
+
+.popup_show .popup__content {
+	visibility: visible;
+	transform: scale(1);
+}
+
+.popup__wrapper {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 100%;
+}
+
+.popup__content {
+	position: relative;
+	visibility: hidden;
+	width: 100%;
+	max-width: rem(560);
+	border: 1px solid var(--sss-white-32);
+	border-radius: var(--sss-border-radius);
+	background-color: var(--sss-bg-primary);
+	color: var(--sss-white);
+	transform: scale(0);
+	transition: transform var(--sss-transition-time) var(--sss-transition-ease);
+
+	@include adaptiveValue('padding', 24, 48, $width-to: 1440);
+
+	.lock & {
+		visibility: visible;
+	}
+}
+
+.popup__close {
+	position: absolute;
+	top: rem(16);
+	right: rem(16);
+	display: grid;
+	place-items: center;
+	width: rem(36);
+	height: rem(36);
+	border: 1px solid var(--sss-white-32);
+	border-radius: 50%;
+	font-size: rem(22);
+	line-height: 1;
+	color: var(--sss-white);
+	transition:
+		background-color var(--sss-transition-time) var(--sss-transition-ease),
+		color var(--sss-transition-time) var(--sss-transition-ease);
+
+	@include hover {
+		background-color: var(--sss-white);
+		color: var(--sss-black);
+	}
+
+	&::before {
+		content: '×';
+	}
+}

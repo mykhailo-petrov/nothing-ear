@@ -1,0 +1,92 @@
+@use '@scss' as *;
+
+[class*='-ibg'] {
+	position: relative;
+
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+[class*='-ibg_contain'] {
+	img {
+		object-fit: contain;
+	}
+}
+%listCounter {
+	list-style-type: none;
+	counter-reset: item;
+
+	li {
+		position: relative;
+
+		&::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			counter-increment: item;
+			content: counter(item);
+		}
+	}
+}
+%responsiveVideo {
+	video,
+	iframe,
+	object,
+	embed {
+		aspect-ratio: 16 / 9;
+	}
+}
+%videoBackground {
+	video,
+	iframe,
+	object,
+	embed {
+		position: fixed;
+		z-index: -100;
+		top: 50%;
+		left: 50%;
+		width: auto;
+		min-width: 100%;
+		height: auto;
+		min-height: 100%;
+		object-fit: cover;
+		transform: translateX(-50%) translateY(-50%);
+	}
+}
+
+%grayfilter {
+	filter: grayscale(1);
+	transition: filter var(--sss-transition-time) var(--sss-transition-ease);
+
+	@include hover {
+		filter: grayscale(0);
+	}
+}
+
+%noselect {
+	user-select: none;
+}
+
+%mirror {
+	transform: scale(-1, 1);
+}
+
+%smoothscroll {
+	-webkit-overflow-scrolling: touch;
+}
+
+%hidescroll {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.text-uppercase {
+	text-transform: uppercase;
+}

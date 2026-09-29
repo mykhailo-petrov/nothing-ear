@@ -1,0 +1,37 @@
+{
+	"name": "my-js-vite-template",
+	"version": "1.0.0",
+	"description": "A lightweight front-end starter: Vite + vanilla JS (ES modules) + SCSS, no UI frameworks and minimal dependencies.",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite --open",
+		"build": "prettier --write . && vite build",
+		"build:readable": "prettier --write . && vite build --minify false",
+		"preview": "prettier --write . && vite preview",
+		"prettier": "prettier --write .",
+		"prettier:check": "prettier --check .",
+		"stylelint": "prettier --write . && stylelint \"src/**/*.scss\" --fix",
+		"stylelint:check": "prettier --write . && stylelint \"src/**/*.scss\"",
+		"strip-comments": "prettier --write . && node scripts/strip-comments.mjs",
+		"clean-unused": "prettier --write . && node scripts/pin-versions.mjs && node scripts/clean-unused.mjs",
+		"clean-unused:check": "prettier --write . && node scripts/clean-unused.mjs --dry",
+		"pin-versions": "prettier --write . && node scripts/pin-versions.mjs",
+		"finalize": "prettier --write . && node scripts/finalize.mjs",
+		"finalize:readable": "prettier --write . && node scripts/finalize.mjs --no-min"
+	},
+	"devDependencies": {
+		"fast-glob": "^3.3.3",
+		"postcss": "^8.5.28",
+		"postcss-discard-comments": "^9.0.2",
+		"postcss-scss": "^4.0.9",
+		"prettier": "^3.9.6",
+		"sass": "^1.104.1",
+		"strip-comments": "^2.0.1",
+		"stylelint": "^17.15.0",
+		"stylelint-config-standard-scss": "^17.0.0",
+		"stylelint-order": "^8.1.1",
+		"vite": "^8.3.0",
+		"vite-plugin-html-inject": "^1.1.2"
+	}
+}

@@ -1,0 +1,44 @@
+@use '@scss/project-mixins' as *;
+
+.watcher-image {
+	opacity: 0;
+	transform: translateY(rem(30));
+	transition:
+		opacity var(--sss-watcher-image-duration) var(--sss-watcher-ease),
+		transform var(--sss-watcher-image-duration) var(--sss-watcher-ease);
+
+	._watcher & {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.watcher-stagger-4 {
+	@include watcherStagger($count: 4);
+}
+
+.watcher-stagger-5 {
+	@include watcherStagger($count: 5);
+}
+
+.watcher-stagger-def {
+	@include watcherStagger;
+}
+
+.watcher-feature-stagger {
+	border: rem(1) solid var(--sss-bg-primary);
+	background: var(--sss-bg-primary);
+	transition:
+		background var(--sss-watcher-def-duration) var(--sss-watcher-ease) 0ms,
+		border-color var(--sss-watcher-def-duration) var(--sss-watcher-ease) 0ms;
+
+	._watcher & {
+		border-color: var(--sss-white-32);
+		background: var(--sss-white-32);
+		transition:
+			background var(--sss-watcher-def-duration) var(--sss-watcher-ease) 400ms,
+			border-color var(--sss-watcher-def-duration) var(--sss-watcher-ease) 400ms;
+	}
+
+	@include watcherStagger($count: 4);
+}

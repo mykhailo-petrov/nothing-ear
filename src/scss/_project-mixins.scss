@@ -1,0 +1,280 @@
+@use 'sass:color';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'settings' as settings;
+
+@function isCssVar($value) {
+	@return meta.type-of($value) == 'string';
+}
+
+@function alpha($color, $opacity) {
+	@return color.change($color, $alpha: $opacity);
+}
+
+@function toPercent($px, $from: 100) {
+	@if isCssVar($px) {
+		@return calc(#{$px} / #{$from} * 100%);
+	}
+
+	@return math.div($px, $from) * 100%;
+}
+
+@function rem($px, $current: 16) {
+	@if isCssVar($px) {
+		@return calc(#{$px} / #{$current} * 1rem);
+	}
+
+	@return math.div($px, $current) * 1rem;
+}
+
+@function em($px, $current: 16) {
+	@if isCssVar($px) {
+		@return calc(#{$px} / #{$current} * 1em);
+	}
+
+	@return math.div($px, $current) * 1em;
+}
+
+@mixin triangle($direction, $color, $size, $size2: $size) {
+	@if $direction == left {
+		border: #{$size2}px solid transparent;
+		border-right: #{$size}px solid $color;
+	}
+
+	@if $direction == right {
+		border: #{$size2}px solid transparent;
+		border-left: #{$size}px solid $color;
+	}
+
+	@if $direction == top {
+		border: #{$size2}px solid transparent;
+		border-bottom: #{$size}px solid $color;
+	}
+
+	@if $direction == bottom {
+		border: #{$size2}px solid transparent;
+		border-top: #{$size}px solid $color;
+	}
+}
+
+@mixin font($font-name, $file-name, $weight, $style) {
+	@font-face {
+		font-family: $font-name;
+		font-weight: #{$weight};
+		font-style: #{$style};
+		font-display: swap;
+		src:
+			url('../fonts/#{$file-name}.woff2') format('woff2'),
+			url('../fonts/#{$file-name}.woff') format('woff');
+	}
+}
+
+@mixin adaptiveValue(
+	$property,
+	$min-size,
+	$max-size,
+	$width-from: null,
+	$width-to: null,
+	$min-outside: null,
+	$max-outside: null
+) {
+	@if not $width-from {
+		$width-from: settings.$min-width;
+	}
+
+	@if not $width-to {
+		$width-to: settings.$max-width;
+	}
+
+	$start-size: $max-size;
+
+	@if $width-from > $width-to {
+		$swap: $width-from;
+		$width-from: $width-to;
+		$width-to: $swap;
+	}
+
+	$width-to-media: em($width-to);
+	$width-from-media: em($width-from);
+	$range-media: '(min-width: #{$width-from-media}) and (max-width: #{$width-to-media})';
+	$to-side-media: '(min-width: #{$width-to-media})';
+	$from-side-media: '(max-width: #{$width-from-media})';
+	$below-media: '(max-width: #{em($width-from - 0.02)})';
+	$above-media: '(min-width: #{em($width-to + 0.02)})';
+
+	@if meta.type-of($min-outside) == 'number' and math.is-unitless($min-outside) {
+		$min-outside: rem($min-outside);
+	}
+
+	@if meta.type-of($max-outside) == 'number' and math.is-unitless($max-outside) {
+		$max-outside: rem($max-outside);
+	}
+
+	$start-is-px: meta.type-of($start-size) == 'number' and math.is-unitless($start-size);
+	$min-is-px: meta.type-of($min-size) == 'number' and math.is-unitless($min-size);
+
+	@if $start-is-px and $min-is-px {
+		@if $start-size == 0 {
+			$start-size: 0.000001;
+		}
+
+		@if $min-size == 0 {
+			$min-size: 0.000001;
+		}
+
+		$slope: math.div($start-size - $min-size, $width-to - $width-from);
+		$y-intersection: -$width-from * $slope + $min-size;
+
+		@if $y-intersection == 0 {
+			$y-intersection: 0.000001;
+		}
+
+		$fly-value: #{rem($y-intersection)}' + ' #{$slope * 100}vw;
+		$property-value: #{'clamp(' rem($min-size) ',' $fly-value ',' rem($start-size) ')'};
+
+		@if $min-size > $start-size {
+			$property-value: #{'clamp(' rem($start-size) ',' $fly-value ',' rem($min-size) ')'};
+		}
+
+		#{$property}: $property-value;
+
+		@if $min-outside {
+			@media #{$below-media} {
+				#{$property}: $min-outside;
+			}
+		}
+
+		@if $max-outside {
+			@media #{$above-media} {
+				#{$property}: $max-outside;
+			}
+		}
+	} @else {
+		@if meta.type-of($start-size) == 'number' and math.is-unitless($start-size) {
+			$start-size: rem($start-size);
+		}
+
+		@if meta.type-of($min-size) == 'number' and math.is-unitless($min-size) {
+			$min-size: rem($min-size);
+		}
+
+		$width-diff: $width-to - $width-from;
+		$ratio-var: --#{$property}-adaptive-ratio;
+		$fly-value: calc(#{$min-size} + (#{$start-size} - #{$min-size}) * var(#{$ratio-var}));
+		$lower-bound: #{'min(' $start-size ',' $min-size ')'};
+		$upper-bound: #{'max(' $start-size ',' $min-size ')'};
+
+		@media #{$to-side-media} {
+			#{$property}: #{$start-size};
+		}
+
+		@media #{$range-media} {
+			#{$ratio-var}: tan(atan2(100vw - #{$width-from}px, #{$width-diff}px));
+			#{$property}: clamp(#{$lower-bound}, #{$fly-value}, #{$upper-bound});
+		}
+
+		@media #{$from-side-media} {
+			#{$property}: #{$min-size};
+		}
+
+		@if $min-outside {
+			@media #{$below-media} {
+				#{$property}: $min-outside;
+			}
+		}
+
+		@if $max-outside {
+			@media #{$above-media} {
+				#{$property}: $max-outside;
+			}
+		}
+	}
+}
+
+@mixin gridContainer(
+	$type: 0,
+	$container: settings.$max-width-container,
+	$padding-start: null,
+	$padding-end: null
+) {
+	$width-from: settings.$container-width;
+
+	@if settings.$max-width-container == 0 {
+		$width-from: settings.$max-width;
+	}
+
+	$slope: math.div(
+		settings.$max-padding - settings.$min-padding,
+		$width-from - settings.$min-width
+	);
+	$y-intersection: settings.$min-padding - settings.$min-width * $slope;
+	$fluid-padding: clamp(
+		#{rem(settings.$min-padding)},
+		#{rem($y-intersection)} + #{$slope * 100}vw,
+		#{rem(settings.$max-padding)}
+	);
+	$side-start: $fluid-padding;
+	$side-end: $fluid-padding;
+
+	@if $padding-start {
+		$side-start: rem($padding-start);
+	}
+
+	@if $padding-end {
+		$side-end: rem($padding-end);
+	}
+
+	$center: #{'min(100% - #{$side-start} - #{$side-end}, #{rem($container)})'};
+
+	display: grid;
+	grid-template-columns: $side-start 1fr $center 1fr $side-end;
+	min-width: 0;
+
+	> * {
+		min-width: 0;
+
+		@if $type == 1 {
+			grid-column: 1 / 6;
+		} @else if $type == 2 {
+			grid-column: 2 / 5;
+		} @else if $type == 3 {
+			grid-column: 3 / 6;
+		} @else if $type == 4 {
+			grid-column: 1 / 4;
+		} @else if $type == 5 {
+			grid-column: 2 / 4;
+		} @else if $type == 6 {
+			grid-column: 3 / 5;
+		} @else {
+			grid-column: 3 / 4;
+		}
+	}
+}
+
+@mixin hover {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			@content;
+		}
+	}
+}
+
+@mixin watcherStagger($count: 3, $step: 80ms) {
+	@for $i from 0 through $count {
+		$delay: $i * $step;
+
+		&--#{$i} {
+			opacity: 0;
+			transform: translateY(rem(30));
+			transition:
+				opacity var(--sss-watcher-def-duration) var(--sss-watcher-ease) #{$delay},
+				transform var(--sss-watcher-def-duration) var(--sss-watcher-ease) #{$delay},
+				var(--sss-element-transition, color 0s);
+
+			._watcher & {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	}
+}

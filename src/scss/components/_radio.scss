@@ -1,0 +1,68 @@
+@use '@scss' as *;
+
+.options {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	&__item {
+		position: relative;
+		cursor: pointer;
+
+		&:not(:last-child) {
+			margin-bottom: em(5);
+		}
+	}
+
+	&__input {
+		position: absolute;
+		width: 0;
+		height: 0;
+		opacity: 0;
+
+		&:focus-visible + .options__label::before {
+			box-shadow: 0 0 5px var(--sss-bg-accent);
+		}
+
+		&:checked + .options__label::before {
+		}
+
+		&:checked + .options__label::after {
+			transform: scale(1);
+		}
+	}
+
+	&__label {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		cursor: pointer;
+
+		&::before {
+			flex: 0 0 20px;
+			align-self: flex-start;
+			width: 20px;
+			height: 20px;
+			border: 1px solid var(--sss-border);
+			border-radius: 50%;
+			content: '';
+		}
+
+		&::after {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background-color: var(--sss-bg-accent);
+			transform: scale(0);
+			transition: transform var(--sss-transition-time) var(--sss-transition-ease);
+			content: '';
+		}
+	}
+
+	&__text {
+		align-self: center;
+	}
+}

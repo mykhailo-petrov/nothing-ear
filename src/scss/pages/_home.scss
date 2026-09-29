@@ -1,0 +1,561 @@
+@use '@scss' as *;
+@use '@scss/breakpoints' as breakpoint;
+@use '@scss/settings' as settings;
+@use '@scss/project-mixins' as *;
+
+.hero {
+	&__grid-body {
+		min-height: 100svh;
+
+		@include gridContainer;
+	}
+
+	&__picture {
+		position: relative;
+		z-index: -1;
+		grid-column: 1 / 6;
+		grid-row: 1 / -1;
+		width: 100%;
+		min-height: 58%;
+		aspect-ratio: 1279 / 910;
+		pointer-events: none;
+
+		@include breakpoint.desk-s {
+			height: 100%;
+			aspect-ratio: unset;
+		}
+
+		&::before {
+			position: absolute;
+			inset: 0;
+			background: var(--sss-bg-image-shadows);
+			pointer-events: none;
+			content: '';
+		}
+	}
+
+	&__image {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	&__content {
+		display: grid;
+		align-content: start;
+		grid-row: 1;
+		gap: rem(28);
+		margin-top: 40dvh;
+
+		@include adaptiveValue('padding-bottom', 64, 113, $width-to: 768);
+
+		@include breakpoint.tab {
+			gap: rem(32);
+		}
+
+		@include breakpoint.desk-s {
+			align-content: end;
+			margin-top: var(--sss-header-height);
+		}
+
+		@include breakpoint.desk-m {
+			padding-bottom: rem(90);
+		}
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.9;
+		letter-spacing: -0.04em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('font-size', 44, 137, $width-to: 1440);
+		@include adaptiveValue('max-width', 233, 725, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			max-width: rem(762);
+			font-size: rem(144);
+		}
+	}
+
+	&__description {
+		max-width: rem(631);
+		color: var(--sss-white-82);
+
+		@include adaptiveValue('font-size', 17, 22, $width-to: 1440);
+	}
+
+	&__buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: rem(16);
+
+		@include adaptiveValue('margin-top', 12, 20, $width-to: 1440);
+
+		@include breakpoint.tab {
+			max-width: rem(464);
+		}
+	}
+
+	&__button {
+		flex: 1 1 auto;
+	}
+}
+
+.feature {
+	&__container {
+		overflow: clip;
+	}
+
+	&__items {
+		display: flex;
+		flex-flow: column wrap;
+		gap: rem(1);
+
+		@include breakpoint.tab {
+			flex-direction: row;
+		}
+	}
+
+	&__item {
+	}
+}
+
+.item-feature {
+	display: grid;
+	align-content: space-between;
+	gap: rem(14);
+	background: var(--sss-bg-primary);
+
+	@include adaptiveValue('padding-block', 39, 55, $width-to: 1280);
+	@include adaptiveValue('padding-inline', 23, 35, $width-to: 1280);
+
+	@include breakpoint.tab {
+		flex: 1 1 calc(25% - rem(1) / 4 * 3);
+		min-width: rem(310);
+		min-height: rem(330);
+	}
+
+	&__value {
+		display: flex;
+		align-items: end;
+		gap: rem(2);
+		font-weight: 500;
+		line-height: 0.9;
+		letter-spacing: -0.04em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('font-size', 44, 86, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			font-size: rem(88);
+		}
+	}
+
+	&__unit {
+		line-height: 0.9;
+		color: var(--sss-text-tertiary);
+
+		@include adaptiveValue('font-size', 19, 36, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			font-size: rem(38);
+		}
+	}
+
+	&__param {
+		font-family: var(--sss-font-secondary);
+		line-height: 1.55;
+		letter-spacing: 0.06em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('font-size', 12, 14, $width-to: 1440);
+	}
+}
+
+.about {
+	background: var(--sss-bg-secondary);
+
+	&__container {
+		display: grid;
+
+		@include breakpoint.desk-s {
+			grid-template-columns: rem(700) rem(704);
+		}
+	}
+
+	&__content {
+		display: grid;
+		text-align: start;
+
+		@include adaptiveValue('gap', 32, 47, $width-to: 1440);
+		@include adaptiveValue('padding-bottom', 64, 117);
+
+		@include breakpoint.tab {
+			text-align: center;
+		}
+
+		@include breakpoint.desk-s {
+			padding-top: rem(147);
+			text-align: start;
+		}
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.95;
+		letter-spacing: -0.018em;
+
+		@include adaptiveValue('font-size', 36, 92, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			font-size: rem(96);
+		}
+	}
+
+	&__description {
+		line-height: 1.5;
+
+		@include adaptiveValue('font-size', 17, 22, $width-to: 1440);
+
+		@include breakpoint.desk-s {
+			max-width: rem(488);
+		}
+	}
+
+	&__slogan {
+		max-width: rem(310);
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.02em;
+
+		@include adaptiveValue('font-size', 24, 36, $width-to: 1440);
+		@include adaptiveValue('margin-top', 28, 32, $width-to: 1440);
+
+		@include breakpoint.tab {
+			max-width: unset;
+		}
+
+		@include breakpoint.desk-s {
+			max-width: rem(454);
+		}
+	}
+
+	&__highlight {
+		color: var(--sss-text-secondary);
+	}
+
+	&__picture {
+		position: relative;
+		display: grid;
+		order: -1;
+		aspect-ratio: 320 / 325;
+		pointer-events: none;
+
+		@include breakpoint.tab {
+			aspect-ratio: 338 / 243;
+		}
+
+		@include breakpoint.desk-s {
+			order: 2;
+			aspect-ratio: unset;
+		}
+	}
+
+	&__image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+		transform: translateY(rem(-28));
+
+		@include breakpoint.desk-s {
+			position: static;
+			object-fit: cover;
+			transform: translate(rem(-124), rem(-57));
+		}
+	}
+}
+
+.details {
+	background: var(--sss-bg-secondary);
+	box-shadow: 0 rem(-1) 0 var(--sss-bg-secondary);
+
+	&__container {
+		display: grid;
+
+		@include adaptiveValue('gap', 48, 80, $width-to: 1440);
+		@include adaptiveValue('padding-bottom', 80, 170);
+	}
+
+	&__head {
+		display: grid;
+
+		@include adaptiveValue('gap', 16, 24, $width-to: 1440);
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.95;
+		letter-spacing: 0.019em;
+
+		@include adaptiveValue('font-size', 36, 92, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			font-size: rem(96);
+		}
+	}
+
+	&__description {
+		line-height: 1.5;
+		color: var(--sss-text-secondary);
+
+		@include adaptiveValue('font-size', 17, 24, $width-to: 1440);
+	}
+
+	&__lists {
+		display: flex;
+		flex-direction: column;
+		border-top: rem(1) solid var(--sss-black-13);
+		border-bottom: rem(1) solid var(--sss-black-13);
+
+		@include breakpoint.desk-s {
+			flex-direction: row;
+			justify-content: space-between;
+			gap: rem(12);
+			border: none;
+		}
+
+		&.watcher-stagger-def {
+			border-color: transparent;
+			transition: border-color var(--sss-watcher-def-duration) var(--sss-watcher-ease);
+
+			._watcher & {
+				border-color: var(--sss-black-13);
+			}
+		}
+	}
+
+	&__list {
+		display: grid;
+		border: none;
+
+		@include breakpoint.desk-s {
+			flex: 1 1 rem(590);
+			border-top: rem(1) solid var(--sss-black-13);
+			border-bottom: rem(1) solid var(--sss-black-13);
+		}
+
+		&:not(:last-child) {
+			border-bottom: rem(1) solid var(--sss-black-13);
+		}
+
+		.watcher-stagger-def & {
+			border-color: transparent;
+			transition: border-color var(--sss-watcher-def-duration) var(--sss-watcher-ease);
+
+			._watcher & {
+				border-color: var(--sss-black-13);
+			}
+		}
+	}
+
+	&__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: rem(8);
+		line-height: 1.2;
+
+		@include adaptiveValue('padding-block', 18, 21, $width-to: 1440);
+
+		&:not(:last-child) {
+			border-bottom: rem(1) solid var(--sss-black-13);
+		}
+	}
+
+	&__term {
+		font-family: var(--sss-font-secondary);
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		color: var(--sss-text-gray);
+
+		@include adaptiveValue('font-size', 12, 14, $width-to: 1440);
+	}
+
+	&__definition {
+		font-weight: 500;
+		letter-spacing: -0.01;
+
+		@include adaptiveValue('font-size', 16, 20, $width-to: 1440);
+	}
+}
+
+.sound {
+	&__grid-body {
+		@include gridContainer;
+
+		min-height: min(#{rem(665)}, 100svh);
+
+		@include breakpoint.tab {
+			min-height: unset;
+		}
+	}
+
+	&__picture {
+		position: relative;
+		z-index: -1;
+		grid-column: 1 / 6;
+		grid-row: 1 / -1;
+		width: 100%;
+		height: 100%;
+		max-height: 100svh;
+		pointer-events: none;
+
+		@include breakpoint.tab {
+			aspect-ratio: 4 / 3;
+		}
+
+		@include breakpoint.desk-s {
+			aspect-ratio: 16 / 9;
+		}
+
+		&::before {
+			position: absolute;
+			inset: 0;
+			background: var(--sss-bg-image-shadows-sound);
+			pointer-events: none;
+			content: '';
+		}
+	}
+
+	&__image {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: var(--sss-sound-image-x-pos) rem(-56);
+
+		@include adaptiveValue('--sss-sound-image-x-pos', 26%, -30%, $width-to: 768);
+
+		@include breakpoint.tab {
+			object-position: 50% rem(-46);
+		}
+
+		@include breakpoint.desk-s {
+			object-position: 50% 15%;
+		}
+	}
+
+	&__content {
+		display: grid;
+		place-content: end start;
+		grid-row: 1;
+
+		@include adaptiveValue('gap', 24, 32, $width-to: 1440);
+		@include adaptiveValue('padding-bottom', 56, 90, $width-from: 768, $width-to: 1440);
+		@include adaptiveValue('max-width', 520, 630, $width-from: 768, $width-to: 1440);
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.95;
+		letter-spacing: -0.019em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('max-width', 230, 350, $width-to: 768);
+		@include adaptiveValue('font-size', 36, 92, $width-to: 1440);
+
+		@include breakpoint.tab {
+			max-width: unset;
+		}
+
+		@include breakpoint.desk-l {
+			font-size: rem(96);
+		}
+	}
+
+	&__description {
+		color: var(--sss-white-85);
+
+		@include adaptiveValue('font-size', 17, 22, $width-to: 1440);
+	}
+
+	&__badges {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+
+		@include adaptiveValue('gap', 8, 10, $width-to: 1440);
+
+		@include breakpoint.mob-s {
+			justify-content: initial;
+		}
+	}
+
+	&__badge {
+		flex: 0 1 calc(50% - 4px);
+		justify-content: center;
+
+		@include breakpoint.mob-s {
+			flex: initial;
+			justify-content: start;
+		}
+	}
+}
+
+.outro {
+	&__container {
+		display: grid;
+		justify-items: center;
+		text-align: center;
+
+		@include adaptiveValue('gap', 24, 32, $width-to: 1440);
+		@include adaptiveValue('padding-block', 96, 207);
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 0.9;
+		letter-spacing: -0.04em;
+		color: var(--sss-white);
+
+		@include adaptiveValue('font-size', 44, 137, $width-to: 1440);
+		@include adaptiveValue('max-width', 274, 856, $width-to: 1440);
+
+		@include breakpoint.desk-l {
+			max-width: rem(896);
+			font-size: rem(144);
+		}
+	}
+
+	&__description {
+		color: var(--sss-text-tertiary);
+
+		@include adaptiveValue('font-size', 17, 22, $width-to: 1440);
+		@include adaptiveValue('max-width', 353, 520, $width-to: 1440);
+	}
+
+	&__buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: rem(16);
+
+		@include adaptiveValue('margin-top', 12, 20, $width-to: 1440);
+	}
+
+	&__button {
+		flex: 1 1 auto;
+	}
+}

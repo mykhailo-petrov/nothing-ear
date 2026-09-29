@@ -1,0 +1,17 @@
+@use '@scss' as *;
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+
+	th,
+	td {
+		padding: rem(10) rem(15);
+		border-bottom: 1px solid var(--sss-border);
+		text-align: left;
+	}
+
+	th {
+		font-weight: 600;
+	}
+}

@@ -1,0 +1,9 @@
+$min-width: 393;
+$min-width-mockup: 320;
+$max-width: 1920;
+$max-width-container: 1280;
+$max-padding: 20;
+$min-padding: 20;
+$container-padding: $max-padding * 2;
+$container-width: $max-width-container + $container-padding;
+$responsive-type: 1;

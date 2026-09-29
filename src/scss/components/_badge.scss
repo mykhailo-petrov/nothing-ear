@@ -1,0 +1,19 @@
+@use '@scss' as *;
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--sss-badge-height, rem(28));
+	padding-block: rem(6);
+	border: 1px solid var(--sss-white-32);
+	border-radius: calc(var(--sss-badge-height, rem(28)) / 2);
+	background-color: transparent;
+	font-family: var(--sss-font-secondary);
+	line-height: 1;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--sss-white);
+
+	@include adaptiveValue('font-size', 11, 13, $width-to: 1440);
+	@include adaptiveValue('padding-inline', 12, 14, $width-to: 1440);
+}

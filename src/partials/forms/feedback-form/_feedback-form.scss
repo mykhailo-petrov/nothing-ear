@@ -1,0 +1,38 @@
+@use '@scss' as *;
+
+.feedback-form {
+	--sss-checkbox-label-color: var(--sss-text-tertiary);
+
+	display: grid;
+	gap: rem(28);
+
+	&__fields {
+		display: grid;
+		gap: rem(20);
+	}
+
+	&__privacy {
+		align-items: center;
+	}
+
+	&__status {
+		font-size: rem(15);
+		text-align: center;
+		color: var(--sss-text-tertiary);
+
+		&._error {
+			color: var(--sss-error);
+		}
+	}
+
+	&__link {
+		text-decoration: underline;
+		color: var(--sss-white);
+		transition: opacity var(--sss-transition-time) var(--sss-transition-ease);
+		text-underline-offset: 0.2em;
+
+		@include hover {
+			opacity: 0.6;
+		}
+	}
+}

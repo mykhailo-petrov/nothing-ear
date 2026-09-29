@@ -1,0 +1,16 @@
+@use '@scss' as *;
+@use '@scss/breakpoints' as breakpoint;
+
+:root {
+	--sss-font-primary: 'Space Grotesk', sans-serif;
+	--sss-font-secondary: 'Space Mono', monospace;
+	--sss-header-height: #{rem(80)};
+	--sss-transition-time: 300ms;
+	--sss-border-radius: 4px;
+	--sss-watcher-def-duration: 0.7s;
+	--sss-watcher-image-duration: 1.3s;
+	--sss-transition-ease: cubic-bezier(0.23, 1, 0.32, 1);
+	--sss-watcher-ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+	@include adaptiveValue('--sss-font-size', 17, 22);
+}

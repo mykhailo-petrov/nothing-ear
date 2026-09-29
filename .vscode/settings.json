@@ -1,0 +1,42 @@
+{
+	"somesass.workspace.importAliases": {
+		"@scss": "/src/scss/_index.scss",
+		"@scss/": "/src/scss/",
+		"@js/": "/src/js/",
+		"@assets/": "/src/assets/",
+		"@/": "/src/"
+	},
+	"somesass.scss.links.enabled": true,
+	"path-autocomplete.pathMappings": {
+		"@scss": "${folder}/src/scss",
+		"@js": "${folder}/src/js",
+		"@assets": "${folder}/src/assets",
+		"@": "${folder}/src"
+	},
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.stylelint": "always"
+	},
+	"stylelint.validate": ["css", "scss"],
+	"scss.validate": false,
+	"[scss]": {
+		"editor.snippetSuggestions": "top",
+		"editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.snippetSuggestions": "top",
+		"editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}
