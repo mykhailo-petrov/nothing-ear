@@ -36,9 +36,17 @@ function toKey(file) {
 	return path.relative(projectRoot, path.resolve(projectRoot, file)).split(path.sep).join('/');
 }
 
+const editedFiles = new Map();
+const removedFiles = new Set();
+
 function isFile(key) {
+	if (removedFiles.has(key)) return false;
 	const full = path.join(projectRoot, key);
 	return existsSync(full) && statSync(full).isFile();
+}
+
+function readSource(key) {
+	return editedFiles.get(key) ?? readFileSync(path.join(projectRoot, key), 'utf8');
 }
 
 function escapeRegExp(value) {
@@ -155,7 +163,7 @@ function findUsed() {
 			const ext = path.extname(key);
 			if (!['.html', '.svg', ...codeExts].includes(ext)) continue;
 
-			const text = stripComments(key, readFileSync(path.join(projectRoot, key), 'utf8'));
+			const text = stripComments(key, readSource(key));
 			corpus += `\n${text}`;
 
 			if (ext === '.html') htmlRefs(text, key).forEach(visit);
@@ -196,21 +204,158 @@ function removePagesFromViteConfig(pages) {
 	console.log(`vite.config.js: из input убраны ${pages.join(', ')}`);
 }
 
+const containerAtRules = new Set(['media', 'supports', 'container', 'layer']);
+const importAtRules = new Set(['use', 'forward', 'import']);
+
+function markupCorpus(used) {
+	return [...used]
+		.filter((key) => ['.html', '.js', '.mjs'].includes(path.extname(key)))
+		.map((key) => stripComments(key, readSource(key)))
+		.join('\n');
+}
+
+function scssCorpus(used, skipKey) {
+	return [...used]
+		.filter((key) => path.extname(key) === '.scss' && key !== skipKey)
+		.map((key) => stripComments(key, readSource(key)))
+		.join('\n');
+}
+
+function analyzeStyles(key, markup) {
+	const source = stripComments(key, readSource(key));
+	const result = { keep: false, hasRules: false, alive: false, placeholders: [] };
+
+	const selectorAlive = (selector) => {
+		const classes = [...selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1]);
+		const attrs = [
+			...selector.matchAll(/\[\s*([\w-]+)\s*(?:[~|^$*]?=\s*(['"]?)(.*?)\2)?\s*\]/g),
+		].map((m) => ({ name: m[1], value: m[3] }));
+
+		if (!classes.length && !attrs.length) return null;
+		return (
+			classes.some((name) => mentions(markup, name)) ||
+			attrs.some(({ name, value }) => (value ? markup.includes(value) : mentions(markup, name)))
+		);
+	};
+
+	const walk = (nodes) => {
+		for (const node of nodes) {
+			if (node.type === 'decl') result.keep = true;
+			if (node.type === 'atrule') {
+				if (importAtRules.has(node.name)) continue;
+				if (containerAtRules.has(node.name)) walk(node.nodes ?? []);
+				else result.keep = true;
+			}
+			if (node.type !== 'rule') continue;
+
+			result.hasRules = true;
+			for (const selector of node.selectors) {
+				if (selector.startsWith('%')) {
+					result.placeholders.push(selector.slice(1).trim());
+					continue;
+				}
+				const alive = selector.includes('#{') ? null : selectorAlive(selector);
+				if (alive === null) result.keep = true;
+				if (alive) result.alive = true;
+			}
+		}
+	};
+
+	walk(postcssScss.parse(source).nodes);
+	return result;
+}
+
+function removeImportsOf(deadKey, used) {
+	const importers = [];
+	for (const key of used) {
+		if (path.extname(key) !== '.scss') continue;
+		const source = readSource(key);
+		const pattern = /^[ \t]*@(?:use|forward|import)\s+['"]([^'"]+)['"][^;]*;[ \t]*\r?\n?/gm;
+		const next = source.replace(pattern, (line, spec) =>
+			resolveScss(spec, key)[0] === deadKey ? '' : line
+		);
+		if (next !== source) importers.push([key, next]);
+	}
+	return importers;
+}
+
+function pruneDeadStyles(used, changes) {
+	const markup = markupCorpus(used);
+	let changed = false;
+
+	for (const key of used) {
+		if (path.extname(key) !== '.scss' || removedFiles.has(key)) continue;
+
+		const info = analyzeStyles(key, markup);
+		if (info.keep || !info.hasRules || info.alive) continue;
+
+		const otherScss = scssCorpus(used, key);
+		const extended = info.placeholders.some((name) =>
+			new RegExp(`@extend\\s+%${escapeRegExp(name)}(?![\\w-])`).test(otherScss)
+		);
+		if (extended) continue;
+
+		for (const [importer, next] of removeImportsOf(key, used)) {
+			editedFiles.set(importer, next);
+			changes.push(`${importer}: убран @use ${key}`);
+		}
+		removedFiles.add(key);
+		changed = true;
+	}
+
+	return changed;
+}
+
+function pruneDeadFonts(used, changes) {
+	const includePattern =
+		/^[ \t]*@include\s+font\(\s*['"]?([^'",\s)]+)['"]?\s*,[^;]*\);[ \t]*\r?\n?/gm;
+	const usageText = scssCorpus(used)
+		.replace(includePattern, '')
+		.replace(/^[ \t]*@(?:use|forward|import)\b[^;]*;/gm, '');
+	let changed = false;
+
+	for (const key of used) {
+		if (path.extname(key) !== '.scss') continue;
+		const source = readSource(key);
+		const next = source.replace(includePattern, (line, family) => {
+			if (mentions(usageText, family)) return line;
+			changes.push(`${key}: убран @include font('${family}')`);
+			return '';
+		});
+		if (next !== source) {
+			editedFiles.set(key, next);
+			changed = true;
+		}
+	}
+
+	return changed;
+}
+
 if (!isFile(entry)) {
 	console.error(`Не найден ${entry} — нечего анализировать.`);
 	process.exit(1);
 }
 
-const used = findUsed();
+const changes = [];
+let used = findUsed();
+while (pruneDeadStyles(used, changes) || pruneDeadFonts(used, changes)) used = findUsed();
+
 const unused = candidates.filter((key) => !used.has(key)).sort();
 
-if (!unused.length) {
+if (!unused.length && !editedFiles.size) {
 	console.log('Неиспользуемых файлов нет.');
 	process.exit(0);
 }
 
-console.log(`Не используются (${unused.length}):`);
-unused.forEach((key) => console.log(`  ${key}`));
+if (unused.length) {
+	console.log(`Не используются (${unused.length}):`);
+	unused.forEach((key) => console.log(`  ${key}`));
+}
+
+if (changes.length) {
+	console.log(`\nПравки в подключениях (${changes.length}):`);
+	changes.forEach((change) => console.log(`  ${change}`));
+}
 
 if (dryRun) process.exit(0);
 
@@ -224,6 +369,9 @@ if (!skipConfirm) {
 	}
 }
 
+editedFiles.forEach((source, key) => {
+	if (!removedFiles.has(key)) writeFileSync(path.join(projectRoot, key), source);
+});
 unused.forEach((key) => rmSync(path.join(projectRoot, key)));
 removeEmptyDirs(path.join(projectRoot, 'src'));
 removeEmptyDirs(path.join(projectRoot, 'public'));

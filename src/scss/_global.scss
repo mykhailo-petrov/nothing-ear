@@ -5,12 +5,10 @@
 
 $pc: em($container-width);
 
-body {
-	.lock & {
-		overflow: hidden;
-		overscroll-behavior: none;
-		touch-action: none;
-	}
+html.lock {
+	overflow: hidden;
+	overscroll-behavior: none;
+	touch-action: none;
 }
 
 .wrapper {

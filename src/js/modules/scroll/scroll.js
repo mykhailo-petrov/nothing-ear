@@ -1,4 +1,3 @@
-import { myModules } from '@js/modules/registry.js';
 import { gotoBlock } from '@js/modules/scroll/go-to-block.js';
 
 export function pageNavigation() {

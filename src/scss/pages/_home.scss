@@ -294,6 +294,7 @@
 
 		@include adaptiveValue('gap', 48, 80, $width-to: 1440);
 		@include adaptiveValue('padding-bottom', 80, 170);
+		@include adaptiveValue('padding-top', 80, 150);
 	}
 
 	&__head {

@@ -21,8 +21,8 @@ class Popup {
 			closeEsc: true,
 			bodyLock: true,
 			hashSettings: {
-				location: true,
-				goHash: true,
+				location: false,
+				goHash: false,
 			},
 			on: {
 				beforeOpen: function () {},
@@ -262,7 +262,7 @@ class Popup {
 			if (!this.bodyLock) bodyUnlock();
 			this.isOpen = false;
 		}
-		this._removeHash();
+		if (this.options.hashSettings.location) this._removeHash();
 		if (this._selectorOpen) {
 			this.lastClosed.selector = this.previousOpen.selector;
 			this.lastClosed.element = this.previousOpen.element;

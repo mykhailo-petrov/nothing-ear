@@ -53,7 +53,7 @@ try {
 
 if (!process.exitCode && inPlace) {
 	for (const entry of readdirSync(outputDir)) {
-		if (entry !== 'node_modules')
+		if (entry !== 'node_modules' && entry !== '.git')
 			rmSync(path.join(outputDir, entry), { recursive: true, force: true });
 	}
 	for (const entry of readdirSync(workDir)) {
